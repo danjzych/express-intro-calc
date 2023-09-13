@@ -6,6 +6,13 @@ const { BadRequestError } = require("./expressError");
 function convertStrNums(strNums) {
   // if the conversion isn't successful, throw a BadRequestError and will
   // be handled in your route
+try {
+  const nums = strNums.split(',').map(num =>Number(num));
+  return nums;
+} catch (error) {
+  throw new BadRequestError();
+}
+
 }
 
 
