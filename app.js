@@ -1,3 +1,4 @@
+"use strict"
 /** Simple demo Express app. */
 
 const express = require("express");
@@ -13,7 +14,6 @@ const MISSING = "Expected key `nums` with comma-separated list of numbers.";
 
 /** Finds mean of nums in qs: returns {operation: "mean", result } */
 app.get('/mean', function(req, res) {
-
   if (!req.query.nums) {
     throw new BadRequestError(MISSING)
   }
@@ -28,7 +28,6 @@ app.get('/mean', function(req, res) {
 
 /** Finds median of nums in qs: returns {operation: "median", result } */
 app.get('/median', function(req, res) {
-
   if (!req.query.nums) {
     throw new BadRequestError(MISSING);
   }
