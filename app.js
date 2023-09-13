@@ -4,15 +4,59 @@ const express = require("express");
 const app = express();
 
 // useful error class to throw
-const { NotFoundError } = require("./expressError");
+const { NotFoundError, BadRequestError } = require("./expressError");
 
 const MISSING = "Expected key `nums` with comma-separated list of numbers.";
 
 
 /** Finds mean of nums in qs: returns {operation: "mean", result } */
+app.get('/mean', function(req, res) {
 
+  if (!req.query.nums) {
+    throw new BadRequestError(MISSING)
+  }
+
+  const nums = req.query.nums.split(',').map(num =>Number(num));
+
+  const average = nums.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue;
+  }, 0) / nums.length;
+
+  return res.json({response: {
+    operation: "mean",
+    value: average
+  }});
+})
 
 /** Finds median of nums in qs: returns {operation: "median", result } */
+app.get('/median', function(req, res) {
+
+  if (!req.query.nums) {
+    throw new BadRequestError(MISSING);
+  }
+
+  const nums = req.query.nums.split(',').map(num =>Number(num));
+  const sorted = nums.sort((a, b) => a - b);
+
+  let value;
+
+  while (sorted.length > 2) {
+    sorted.pop();
+    sorted.shift();
+
+    if (sorted.length === 1) {
+      value = sorted[0]
+    } else {
+      value = (sorted[0] + sorted[1]) / 2
+    }
+  }
+
+  return res.json({response: {
+    operation: "median",
+    value: value
+  }})
+
+})
 
 
 /** Finds mode of nums in qs: returns {operation: "mean", result } */
